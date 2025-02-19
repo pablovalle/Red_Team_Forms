@@ -175,7 +175,7 @@
         </div>
       </div>
 
-      <input type="submit" value="Enviar" />
+      <input type="submit" value="Send" />
     </form>
   </div>
 
@@ -233,6 +233,7 @@
 
       event.preventDefault();
       const form = event.target;
+      const submitButton = form.querySelector('input[type="submit"]');
       const jsonData = Object.fromEntries(new FormData(form).entries());
       if (jsonData.resultado === 'pass' && !jsonData.severity) {
         jsonData.severity = 'None';
