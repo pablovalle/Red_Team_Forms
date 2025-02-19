@@ -1,41 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        input, textarea {
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background: blue;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario de Red Teaming</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #fff;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+    }
+    select, input[type="text"], input[type="email"], input[type="password"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      background-color: #0078d7;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    input[type="submit"]:hover {
+      background-color: #005a9e;
+    }
+    .radio-group {
+      margin-top: 10px;
+    }
+    .radio-group label {
+      margin-right: 15px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Formulario de Red Teaming</h2>
+    <form action="#" method="post">
+      <!-- Desplegable con nombres de estudiantes -->
+      <label for="estudiante">Nombre del Estudiante:</label>
+      <select id="estudiante" name="estudiante" required>
+        <option value="">Seleccione un estudiante</option>
+        <option value="estudiante1">Estudiante 1</option>
+        <option value="estudiante2">Estudiante 2</option>
+        <option value="estudiante3">Estudiante 3</option>
+        <!-- Agrega más opciones según corresponda -->
+      </select>
+
+      <!-- Desplegable del modelo LLM under test -->
+      <label for="modelo">Modelo LLM Under Test:</label>
+      <select id="modelo" name="modelo" required>
+        <option value="">Seleccione un modelo</option>
+        <option value="gpt4">GPT-4</option>
+        <option value="chatgpt">ChatGPT</option>
+        <option value="otro">Otro Modelo</option>
+      </select>
+
+      <!-- Desplegable de diferentes tipos de safety -->
+      <label for="safety">Tipo de Safety:</label>
+      <select id="safety" name="safety" required>
+        <option value="">Seleccione un tipo de safety</option>
+        <option value="safety1">Safety Tipo 1</option>
+        <option value="safety2">Safety Tipo 2</option>
+        <option value="safety3">Safety Tipo 3</option>
+        <!-- Agrega más opciones según corresponda -->
+      </select>
+
+      <!-- Grupo de botones para elegir el idioma -->
+      <label>Idioma:</label>
+      <div class="radio-group">
+        <label><input type="radio" name="idioma" value="castellano" required> Castellano</label>
+        <label><input type="radio" name="idioma" value="ingles"> Inglés</label>
+        <label><input type="radio" name="idioma" value="chino"> Chino</label>
+      </div>
+
+      <!-- Grupo de botones para identificar la conversación como Pass o Fail -->
+      <label>Resultado de la conversación:</label>
+      <div class="radio-group">
+        <label><input type="radio" name="resultado" value="pass" required> Pass</label>
+        <label><input type="radio" name="resultado" value="fail"> Fail</label>
+      </div>
+
+      <!-- Grupo de botones para la severidad, visible solo si se selecciona Fail -->
+      <div id="severity-container" class="hidden">
+        <label>Severidad (en caso de Fail):</label>
+        <div class="radio-group">
+          <label><input type="radio" name="severity" value="critical" required> Critical</label>
+          <label><input type="radio" name="severity" value="high"> High</label>
+          <label><input type="radio" name="severity" value="medium"> Medium</label>
+          <label><input type="radio" name="severity" value="low"> Low</label>
+        </div>
+      </div>
+
+      <input type="submit" value="Enviar">
+    </form>
+  </div>
+
     <script>
+        // Selecciona los radios de resultado y el contenedor de severidad
+        const resultadoRadios = document.getElementsByName('resultado');
+        const severityContainer = document.getElementById('severity-container');
+
+        function toggleSeverity() {
+        let selectedValue;
+        resultadoRadios.forEach(radio => {
+            if (radio.checked) {
+            selectedValue = radio.value;
+            }
+        });
+        if (selectedValue === 'fail') {
+            severityContainer.classList.remove('hidden');
+            // Hacer obligatoria la selección de severidad si es visible
+            document.getElementsByName('severity').forEach(radio => {
+            radio.required = true;
+            });
+        } else {
+            severityContainer.classList.add('hidden');
+            // Quitar el required y desmarcar la selección si se oculta
+            document.getElementsByName('severity').forEach(radio => {
+            radio.required = false;
+            radio.checked = false;
+            });
+        }
+        }
+
+        resultadoRadios.forEach(radio => {
+        radio.addEventListener('change', toggleSeverity);
+        });
         function enviarFormulario(event) {
             event.preventDefault();
             
@@ -58,17 +179,6 @@
                 alert("¡Error al enviar! Pero los datos pueden haberse guardado."); // Manejo de error
             });
         }
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h2>Contacto</h2>
-        <form onsubmit="enviarFormulario(event)">
-            <input type="text" name="nombre" placeholder="Tu Nombre" required>
-            <input type="email" name="email" placeholder="Tu Correo" required>
-            <textarea name="mensaje" placeholder="Tu Mensaje" required></textarea>
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
+    </script>   
 </body>
 </html>
