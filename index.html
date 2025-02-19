@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: blue;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function enviarFormulario(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const data = new FormData(form);
+            const jsonData = {};
+            data.forEach((value, key) => { jsonData[key] = value; });
+
+            fetch('https://script.google.com/macros/s/AKfycbw5KK3QJ0X7pWbJoALcf-_PuceyRH1e2nRUcmW0Lkt_i_0x4EYedDiMCnxLRdoPKEem1A/exec', {
+                method: 'POST',
+                mode: 'no-cors', // Permite enviar sin bloquear por CORS
+                body: JSON.stringify(jsonData),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(() => {
+                alert("Formulario enviado con éxito ✅"); // Mensaje manual de éxito
+                form.reset(); // Limpia los campos después de enviar
+            })
+            .catch(() => {
+                alert("¡Error al enviar! Pero los datos pueden haberse guardado."); // Manejo de error
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Contacto</h2>
+        <form onsubmit="enviarFormulario(event)">
+            <input type="text" name="nombre" placeholder="Tu Nombre" required>
+            <input type="email" name="email" placeholder="Tu Correo" required>
+            <textarea name="mensaje" placeholder="Tu Mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
