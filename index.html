@@ -230,6 +230,7 @@
 
     // Function to handle form submission.
     function enviarFormulario(event) {
+
       event.preventDefault();
       const form = event.target;
       const jsonData = Object.fromEntries(new FormData(form).entries());
@@ -237,6 +238,8 @@
         jsonData.severity = 'None';
       }
       console.log("Data to send:", jsonData);
+      submitButton.disabled = true;
+      submitButton.value = "Sending...";
 
       fetch("https://script.google.com/macros/s/AKfycbw2Kfc17Qov95GnskLTQFCgZh831Ewf82zAWBiwQ3wmQad33_oEGyJxQb7uIyVLBKINJg/exec", {
         method: "POST",
@@ -248,6 +251,8 @@
           alert("Formulario enviado con éxito ✅");
           form.reset();
           severityContainer.classList.add("hidden");
+          submitButton.disabled = false;
+          submitButton.value = "Send";
         })
         .catch(() => {
           alert("¡Error al enviar! Pero los datos pueden haberse guardado.");
