@@ -249,14 +249,14 @@
         headers: { "Content-Type": "application/json" }
       })
         .then(() => {
-          alert("Formulario enviado con éxito ✅");
+          alert("Your response was saved correctly ✅");
           form.reset();
           severityContainer.classList.add("hidden");
           submitButton.disabled = false;
           submitButton.value = "Send";
         })
         .catch(() => {
-          alert("¡Error al enviar! Pero los datos pueden haberse guardado.");
+          alert("¡Error!");
         });
     }
   </script>
