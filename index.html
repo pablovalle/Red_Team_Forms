@@ -195,7 +195,7 @@
         "https://script.google.com/macros/s/AKfycbw5KK3QJ0X7pWbJoALcf-_PuceyRH1e2nRUcmW0Lkt_i_0x4EYedDiMCnxLRdoPKEem1A/exec",
         {
           method: "POST",
-          mode: "cors", // Changed from "no-cors" so that the request sends the proper headers
+          mode: "no-cors", // Changed from "no-cors" so that the request sends the proper headers
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonData)
         }
