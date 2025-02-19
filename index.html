@@ -3,31 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Formulario de Red Teaming</title>
+  <title>Red Teaming</title>
+  <!-- Google Font for a modern look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --primary-color: #0078d7;
+      --primary-hover: #005a9e;
+      --secondary-color: #333;
+      --bg-color: #f2f2f2;
+      --white: #fff;
+      --border-color: #ccc;
+      --text-color: #555;
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e2e8f0, #f2f2f2);
       margin: 0;
       padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
     .container {
-      background: #fff;
+      background: var(--white);
       max-width: 600px;
-      margin: 50px auto;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      margin: 20px;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #333;
+      margin-bottom: 25px;
+      color: var(--secondary-color);
     }
     label {
       display: block;
-      margin-top: 15px;
-      color: #555;
+      margin-top: 20px;
+      color: var(--text-color);
+      font-weight: 500;
     }
     input[type="text"],
     input[list],
@@ -36,32 +69,51 @@
     select,
     textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
+      padding: 12px 15px;
+      margin-top: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
       font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[list]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 5px rgba(0, 120, 215, 0.3);
     }
     input[type="submit"] {
-      background-color: #0078d7;
-      color: #fff;
+      background-color: var(--primary-color);
+      color: var(--white);
       border: none;
-      padding: 12px;
-      border-radius: 4px;
+      padding: 15px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 16px;
-      margin-top: 20px;
+      margin-top: 30px;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
     input[type="submit"]:hover {
-      background-color: #005a9e;
+      background-color: var(--primary-hover);
     }
     .radio-group {
       margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
     .radio-group label {
-      margin-right: 15px;
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+    }
+    .radio-group input[type="radio"] {
+      margin-right: 8px;
     }
     .hidden {
       display: none;
@@ -70,10 +122,9 @@
 </head>
 <body>
   <div class="container">
-    <h2>Formulario de Red Teaming</h2>
-    <!-- The form calls the enviarFormulario function on submit -->
+    <h2>Red Teaming</h2>
     <form action="#" method="post" onsubmit="enviarFormulario(event)">
-      <!-- Student Selection using datalist for easy configuration and search -->
+      <!-- Student Selection -->
       <label for="estudiante">Student Name:</label>
       <input list="students" id="estudiante" name="estudiante" required placeholder="Buscar o seleccionar estudiante" />
       <datalist id="students">
@@ -106,8 +157,6 @@
         <option value="safety3">Safety Tipo 3</option>
       </select>
 
-      
-
       <!-- Radio group for conversation result -->
       <label>Test Result:</label>
       <div class="radio-group">
@@ -132,7 +181,6 @@
 
   <script>
     // Easily configurable array of students.
-    // Modify the array below as needed for each study.
     const studentList = [
       "Aitor Arrieta",
       "Jon Ayerdi",
@@ -164,13 +212,11 @@
       });
       if (selectedValue === "fail") {
         severityContainer.classList.remove("hidden");
-        // Ensure the severity selection is required.
         document.getElementsByName("severity").forEach(radio => {
           radio.required = true;
         });
       } else {
         severityContainer.classList.add("hidden");
-        // Remove required attribute and clear selection if hidden.
         document.getElementsByName("severity").forEach(radio => {
           radio.required = false;
           radio.checked = false;
@@ -185,29 +231,22 @@
     // Function to handle form submission.
     function enviarFormulario(event) {
       event.preventDefault();
-
       const form = event.target;
-      // Create an object from form data using Object.fromEntries
       const jsonData = Object.fromEntries(new FormData(form).entries());
-      if (jsonData.result === 'pass' && !jsonData.severity) {
+      if (jsonData.resultado === 'pass' && !jsonData.severity) {
         jsonData.severity = 'None';
       }
-      // Log the JSON data to verify that all fields are captured correctly
       console.log("Data to send:", jsonData);
 
-      fetch(
-        "https://script.google.com/macros/s/AKfycbw2Kfc17Qov95GnskLTQFCgZh831Ewf82zAWBiwQ3wmQad33_oEGyJxQb7uIyVLBKINJg/exec",
-        {
-          method: "POST",
-          mode: "no-cors", // Allows sending data without being blocked by CORS.
-          body: JSON.stringify(jsonData),
-          headers: { "Content-Type": "application/json" }
-        }
-      )
+      fetch("https://script.google.com/macros/s/AKfycbw2Kfc17Qov95GnskLTQFCgZh831Ewf82zAWBiwQ3wmQad33_oEGyJxQb7uIyVLBKINJg/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(jsonData),
+        headers: { "Content-Type": "application/json" }
+      })
         .then(() => {
           alert("Formulario enviado con éxito ✅");
           form.reset();
-          // Hide severity options after reset.
           severityContainer.classList.add("hidden");
         })
         .catch(() => {
