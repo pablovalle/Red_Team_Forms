@@ -66,7 +66,8 @@
 <body>
   <div class="container">
     <h2>Formulario de Red Teaming</h2>
-    <form action="#" method="post">
+    <!-- Se asigna la función enviarFormulario al evento onsubmit -->
+    <form action="#" method="post" onsubmit="enviarFormulario(event)">
       <!-- Desplegable con nombres de estudiantes -->
       <label for="estudiante">Nombre del Estudiante:</label>
       <select id="estudiante" name="estudiante" required>
@@ -126,59 +127,63 @@
     </form>
   </div>
 
-    <script>
-        // Selecciona los radios de resultado y el contenedor de severidad
-        const resultadoRadios = document.getElementsByName('resultado');
-        const severityContainer = document.getElementById('severity-container');
+  <script>
+    // Función para mostrar/ocultar la sección de severidad en función del resultado seleccionado
+    const resultadoRadios = document.getElementsByName('resultado');
+    const severityContainer = document.getElementById('severity-container');
 
-        function toggleSeverity() {
-        let selectedValue;
-        resultadoRadios.forEach(radio => {
-            if (radio.checked) {
-            selectedValue = radio.value;
-            }
+    function toggleSeverity() {
+      let selectedValue;
+      resultadoRadios.forEach(radio => {
+        if (radio.checked) {
+          selectedValue = radio.value;
+        }
+      });
+      if (selectedValue === 'fail') {
+        severityContainer.classList.remove('hidden');
+        // Hacer obligatoria la selección de severidad si es visible
+        document.getElementsByName('severity').forEach(radio => {
+          radio.required = true;
         });
-        if (selectedValue === 'fail') {
-            severityContainer.classList.remove('hidden');
-            // Hacer obligatoria la selección de severidad si es visible
-            document.getElementsByName('severity').forEach(radio => {
-            radio.required = true;
-            });
-        } else {
-            severityContainer.classList.add('hidden');
-            // Quitar el required y desmarcar la selección si se oculta
-            document.getElementsByName('severity').forEach(radio => {
-            radio.required = false;
-            radio.checked = false;
-            });
-        }
-        }
-
-        resultadoRadios.forEach(radio => {
-        radio.addEventListener('change', toggleSeverity);
+      } else {
+        severityContainer.classList.add('hidden');
+        // Quitar el required y desmarcar la selección si se oculta
+        document.getElementsByName('severity').forEach(radio => {
+          radio.required = false;
+          radio.checked = false;
         });
-        function enviarFormulario(event) {
-            event.preventDefault();
-            
-            const form = event.target;
-            const data = new FormData(form);
-            const jsonData = {};
-            data.forEach((value, key) => { jsonData[key] = value; });
+      }
+    }
 
-            fetch('https://script.google.com/macros/s/AKfycbw5KK3QJ0X7pWbJoALcf-_PuceyRH1e2nRUcmW0Lkt_i_0x4EYedDiMCnxLRdoPKEem1A/exec', {
-                method: 'POST',
-                mode: 'no-cors', // Permite enviar sin bloquear por CORS
-                body: JSON.stringify(jsonData),
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .then(() => {
-                alert("Formulario enviado con éxito ✅"); // Mensaje manual de éxito
-                form.reset(); // Limpia los campos después de enviar
-            })
-            .catch(() => {
-                alert("¡Error al enviar! Pero los datos pueden haberse guardado."); // Manejo de error
-            });
-        }
-    </script>   
+    resultadoRadios.forEach(radio => {
+      radio.addEventListener('change', toggleSeverity);
+    });
+
+    // Función que maneja el envío del formulario
+    function enviarFormulario(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const data = new FormData(form);
+      const jsonData = {};
+      data.forEach((value, key) => { jsonData[key] = value; });
+
+      fetch('https://script.google.com/macros/s/AKfycbw5KK3QJ0X7pWbJoALcf-_PuceyRH1e2nRUcmW0Lkt_i_0x4EYedDiMCnxLRdoPKEem1A/exec', {
+          method: 'POST',
+          mode: 'no-cors', // Permite enviar sin bloquear por CORS
+          body: JSON.stringify(jsonData),
+          headers: { 'Content-Type': 'application/json' }
+      })
+      .then(() => {
+          alert("Formulario enviado con éxito ✅"); // Mensaje manual de éxito
+          form.reset(); // Limpia los campos después de enviar
+          // Oculta la sección de severidad al reiniciar el formulario
+          severityContainer.classList.add('hidden');
+      })
+      .catch(() => {
+          alert("¡Error al enviar! Pero los datos pueden haberse guardado."); // Manejo de error
+      });
+    }
+  </script>
 </body>
 </html>
