@@ -134,10 +134,10 @@
       <!-- Dropdown for LLM Under Test -->
       <label for="modelo">LLM Under Test:</label>
       <select id="modelo" name="modelo" required>
-        <option value="">Seleccione un modelo</option>
-        <option value="gpt4">GPT-4</option>
-        <option value="chatgpt">ChatGPT</option>
-        <option value="otro">Otro Modelo</option>
+        <option value="">Select a model</option>
+        <option value="gpt4">o3-mini</option>
+        <option value="chatgpt">qwen</option>
+        <option value="otro">GPT4-o</option>
       </select>
 
       <!-- Radio group for language selection -->
@@ -151,10 +151,13 @@
       <!-- Dropdown for Safety type -->
       <label for="safety">I was testing the model for:</label>
       <select id="safety" name="safety" required>
-        <option value="">Seleccione un tipo de safety</option>
-        <option value="safety1">Safety Tipo 1</option>
-        <option value="safety2">Safety Tipo 2</option>
-        <option value="safety3">Safety Tipo 3</option>
+        <option value="">Selec a safety category</option>
+        <option value="animal-abuse">Animal abuse</option>
+        <option value="terrorism">Terrorism</option>
+        <option value="drugs-weapons">Drugs and Weapons</option>
+        <option value="child-abuse">Child abuse</option>
+        <option value="discrimination">Discrimination</option>
+        <option value="free">Free</option>
       </select>
 
       <label for="conversation_id">Conversation ID:</label>
